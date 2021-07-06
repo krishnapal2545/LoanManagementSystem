@@ -436,6 +436,33 @@ def addloan(id):
         return render_template('addloan.html')
     else:
         return redirect('/login/admin')
+
+@app.route('/loanpay/<auth>',methods=['GET','POST'])
+def loanpayment(auth):
+    login=False
+    user=False
+    alluser = User.query.all()
+    if request.method == 'POST':
+        if request.form['logid']:
+            logid=request.form['logid']
+            passw = request.form['pass']
+            if Agent.query.filter_by(ID_Number=logid,Password=passw).first():
+                login=True
+        elif request.form['ac_no']:
+            ac= request.form['ac_no']
+            amount= float(request.form['amount'])
+            user = User.query.filter_by(Account_No=ac).first()
+            if user.Intrest >= amount:
+                user.Intrest = user.Intrest - amount
+            else:
+                user.Balance = user.Amount -(user.Intrest-amount)
+                user.Intrest = 0
+            user.Payment = datetime.date.today()
+            db.session.commit()
+            flash("Loan Payment Successfully")
+            return redirect(f'/profile/{auth}')
+        return render_template('loanpay.html',Login=login,Alluser=alluser)
+    return render_template('loanpay.html',Login=login,Alluser=alluser)
+
 if __name__ == '__main__':
-    
     app.run(debug=True,port='5000')
