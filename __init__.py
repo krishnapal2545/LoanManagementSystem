@@ -3,10 +3,14 @@ from flask import Flask , render_template , request,redirect,flash
 from flask_sqlalchemy import SQLAlchemy
 import string, random, os , datetime
 
+local = False
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/profile/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:@localhost/redlms"
+if local:
+  app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:@localhost/redlms"
+else:
+  app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:@redcarpetlms.herokuapp.com//database.sql"
 app.config['SECRET_KEY'] =''.join(random.choices(string.ascii_uppercase+string.ascii_lowercase + string.digits,k=20))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -465,4 +469,4 @@ def loanpayment(auth):
     return render_template('loanpay.html',Login=login,Alluser=alluser)
 
 if __name__ == '__main__':
-    app.run(debug=True,port='5000')
+    app.run(debug=False)
