@@ -4,3 +4,5 @@ This is Loan Management System using Flask in this webapp there are 3 side custo
 if Customers have to apply for loan this can only done by agent and loan approved or reject by the admin athe user details can be edited by agent and admin and agent details can be edited by
 admin.
 
+![GitHub Logo](/screenshot/login.png)
+Format: ![Alt Text](url)
