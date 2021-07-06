@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+    <link rel="icon" href="{{ url_for('static',filename='logo.png')}}" type="image/icon type">
+    <script src="https://kit.fontawesome.com/6ad0a05750.js" crossorigin="anonymous"></script>
+    <title>RedCarpet</title>
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+        a{
+            cursor: pointer;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 20px;
+        }
+
+        .card:hover{
+            border: 3px;
+            box-shadow: 0 0 80px -10px rgb(0, 0, 0);
+            opacity: 100%;
+        }
+        
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+        .tab{
+            display: none;
+        }
+        a{
+            cursor: pointer;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 20px;
+        }
+        h1{
+            font-family: 'Times New Roman', Times, serif;
+        }
+    </style>
+</head>
+
+<body>
+  {%- for message in get_flashed_messages() %}
+        <div class="alert alert-primary alert-dismissible fade show" role="alert" style="text-align: center;">
+          {{ message }}
+        </div>
+    {%- endfor %}
+    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Profile</a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"style="position:absolute;"></span>
+        </button>
+        {% if auth %}
+        <a class="navbar-brand col-md-0  " onclick="goBack()">GoBack</a>
+        {% elif admin %}
+        <a class="navbar-brand col-md-0  " href="/logout/{{User.Login_id}}">Logout</a>
+        {% else %} 
+        <a class="navbar-brand col-md-0  " href="/logout/{{User.ID_Number}}">Logout</a>
+        {% endif %}
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" onclick="Tab(0)">
+                                <span data-feather="home"></span>
+                                Profile
+                            </a>
+                        </li>
+                        {% if auth %} 
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" onclick="Tab(1)">
+                                <span data-feather="file"></span>
+                                List of User
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" onclick="Tab(3)">
+                                <span data-feather="file"></span>
+                                List of Loan
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" onclick="Tab(4)">
+                                <span data-feather="file"></span>
+                                Appiled Loan 
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% if admin %}
+                        <li class="nav-item">
+                            <a class="nav-link" onclick="Tab(2)">
+                                <span data-feather="file"></span>
+                                List of Agent
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% if admin %}
+                        <li class="nav-item">
+                            <a class="nav-link" onclick="Tab(5)">
+                                <span data-feather="file"></span>
+                                Rejected Loan 
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" onclick="Tab(6)">
+                                <span data-feather="file"></span>
+                                Approved Loan 
+                            </a>
+                        </li>
+                        {% endif %}
+                   </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="tab">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Profile</h1>
+                </div>
+                <img src="{{url_for('static',filename=User.Photo)}}" class=" col-md-3" style="margin-left:35%;">
+                <h4 class="py-3" style="white-space:pre-wrap;font-family:'Times New Roman', Times, serif;">
+                    <br>
+                    Name:{{User.Name}}<br>
+                    Phone : {{User.Phone}}<br>
+                    Email:{{User.Email}}<br>
+                    {% if admin %}
+                    Login ID:{{User.Login_id}}
+                    {% else %}
+                    ID Number:{{User.ID_Number}}
+                    {% endif %}
+                </h4>
+               </div>
+               <div class="tab">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">List of Users</h1>
+                </div>
+                <table class="table">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">Sr.no</th>
+                        <th scope="col">Account Number</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Profile</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                     {% for user in Alluser %}
+                      <tr>
+                        <th scope="row">{{user.id}}</th>
+                        <td>{{user.Account_No}}</td>
+                        <td>{{user.Name}}</td>
+                        <td>{{user.Phone}}</td>
+                        <td>{{user.Email}}</td>
+                        {% if admin %}
+                        <td><a class="btn btn-secondary" href="/profile/{{user.Account_No}}/{{User.Login_id}}">View Profile</a></td>
+                        {% else %}
+                        <td><a class="btn btn-secondary" href="/profile/{{user.Account_No}}/{{User.ID_Number}}">View Profile</a></td>
+                        {% endif %}
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+               </div>
+               <div class="tab">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">List of Agent</h1>
+                    <a class="link-secondary" href="/addagent">
+                        <i class="fas fa-plus" style="font-size: 40px;"></i>
+                    </a>
+                </div>
+                <table class="table">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">Sr.no</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Profile</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for agent in Agent %}
+                      <tr>
+                        <th scope="row">{{agent.id}}</th>
+                        <td>{{agent.Name}}</td>
+                        <td>{{agent.Phone}}</td>
+                        <td>{{agent.Email}}</td>
+                        <td><a class="btn btn-secondary" href="/profile/{{agent.ID_Number}}/{{User.Login_id}}">View Profile</a></td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+               </div>
+               <div class="tab">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">List of Loan</h1>
+                    {% if admin %}
+                    <a class="link-secondary" href="/addloan/{{User.Login_id}}">
+                        <i class="fas fa-plus" style="font-size: 40px;"></i>
+                    </a>
+                    {% endif %}
+                </div>
+                <table class="table">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">Sr.no</th>
+                        <th scope="col">Loan ID</th>
+                        <th scope="col">Loan Name</th>
+                        <th scope="col">Views</th>
+                        {% if agent %}
+                        <th scope="col">Apply</th>
+                        {% endif %}
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for loan in Loan %}
+                      <tr>
+                        <th scope="row">{{loan.id}}</th>
+                        <td>{{loan.Loan_id}}</td>
+                        <td>{{loan.Title}}</td>
+                        <td><a class="btn btn-secondary" href="/loan/{{loan.Loan_id}}">View Loan</a></td>
+                        {% if agent %}
+                        <td><a class="btn btn-secondary" href="/apply/{{loan.Loan_id}}/{{User.ID_Number}}">Apply for Loan</a></td>
+                        {% endif %}
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+               </div>
+               <div class="tab">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Applied Loan</h1>
+                </div>
+                 <table class="table">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">Sr.no</th>
+                        <th scope="col">User Account</th>
+                        <th scope="col">Loan ID</th>
+                        {% if agent %}
+                        <th scope="col">Edit</th>
+                        {% endif %}
+                        {% if admin %}
+                        <th scope="col">Approved</th>
+                        <th scope="col">Reject</th>
+                        {% endif %}
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% if agent %} 
+                        {% for book in Loanbook  %}
+                      <tr>
+                        <th scope="row">{{book.id}}</th>
+                        <td>{{book.User_ac}}</td>
+                        <td>{{book.Loan_id}}</td>
+                        <td>
+                             <a class="btn btn-secondary" href="/editloan/{{book.Loan_id}}/{{book.User_ac}}/{{User.ID_Number}}" >Edit</a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                        {% endif %}
+                    {% if admin %}
+                     {% for book in Loanbook if book.Status =='New' %}
+                      <tr>
+                        <th scope="row">{{book.id}}</th>
+                        <td>{{book.User_ac}}</td>
+                        <td>{{book.Loan_id}}</td>
+                        <td>
+                            <form method="POST" >
+                             <input type="hidden" name="ac_no" value="{{book.User_ac}}">
+                             <input type="hidden" name="loanid" value="{{book.Loan_id}}">
+                             <input type="hidden" name="status" value="Approved">
+                             <button type="submit" class="btn btn-success btn-lg">Approved</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="POST">
+                             <input type="hidden" name="ac_no" value="{{book.User_ac}}">
+                             <input type="hidden" name="loanid" value="{{book.Loan_id}}">
+                             <input type="hidden" name="status" value="Reject">
+                             <button type="submit" class="btn btn-danger btn-lg">Rejected</button>
+                            </form>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                      {% endif %}
+                    </tbody>
+                  </table>
+               </div>
+               <div class="tab">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Rejected Loan</h1>
+                </div>
+                <table class="table">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">Sr.no</th>
+                        <th scope="col">User Account</th>
+                        <th scope="col">Loan ID</th>
+                        <th scope="col">Reject</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                     {% for book in Loanbook if book.Status =='Reject' %}
+                      <tr>
+                        <th scope="row">{{book.id}}</th>
+                        <td>{{book.User_ac}}</td>
+                        <td>{{book.Loan_id}}</td>
+                        <td><button type="button" class="btn btn-danger btn-lg">Rejected</button></td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+               </div>
+               <div class="tab">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Approved Loan</h1>
+                </div>
+                <table class="table">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">Sr.no</th>
+                        <th scope="col">User Account</th>
+                        <th scope="col">Loan ID</th>
+                        <th scope="col">Approved</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                     {% for book in Loanbook if book.Status=='Approved' %}
+                      <tr>
+                        <th scope="row">{{book.id}}</th>
+                        <td>{{book.User_ac}}</td>
+                        <td>{{book.Loan_id}}</td>
+                        <td><button type="button" class="btn btn-success btn-lg">Approved</button></td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+               </div>
+               
+            </main>
+        </div>
+    </div>
+    <script>
+        window.addEventListener( "pageshow", function ( event ) {
+            var historyTraversal = event.persisted || ( typeof window.performance != "undefined" && window.performance.navigation.type === 2 );
+            if ( historyTraversal ) {
+              window.location.reload();
+            }
+          });
+        var first = 0;
+        Tab(first);
+        function Tab(n) {
+            var x = document.getElementsByClassName("tab");
+            for (var i = 0; i < x.length; i++) {x[i].style.display = "none";} 
+            x[n].style.display = "block";
+        }
+        function goBack() {
+            window.history.back();
+          }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,79 @@
+{% include 'homestyle.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+    {% block content %}   
+      <main>
+        <section class="py-3 text-center container">
+          <div class="row py-lg-5">
+            <div class="col-lg-9 col-md-8 mx-auto">
+              <h1 class="fw-light" style="font-family: 'Times New Roman', Times, serif;">RedCarpet Loan </h1>
+              <p class="lead text-muted">
+                At RedCarpet, your privacy and data is what matters to us the most. Our product is built around the policy of honesty. We first state the reason and then ask for permission and data.
+                We also make sure that all of your data is stored in Indian Data Center with industry leading security mechanisms to keep it safe and sound!
+              </p>
+            </div>
+          </div>
+        </section>
+      
+        <div class="album py-3 bg-light">
+          <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                {% for Loan in Loans %}
+              <div class="col">
+                <div class="card ">
+                  <img src="{{Loan.Thumbnail}}">
+                  <div class="card-body">
+                      <h5>{{Loan.Title}}</h5>
+                    <p class="card-text">{{Loan.Description[0:200]}}............</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="/loan/{{Loan.Loan_id}}" class="btn btn-sm btn-outline-primary ">More Information</a>
+                        {% if Agent %}
+                        <a href="#!" class="btn btn-sm btn-outline-primary ">Apply</a>
+                        {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      
+      </main>
+      <footer class="page-footer font-small blue pt-4" style="background-color: black;">
+        <div class="container-fluid text-center text-md-left">
+          <div class="row">
+            <div class="col-md-6 mt-md-3 mt-3 ">
+                <a href="/">
+                    <img src="{{ url_for('static',filename='logoname.png')}}" alt="" width="40%" height="40%"
+                        class="d-inline-block align-text-top">
+                </a>
+              <p class="px-5 text-white">Track your transactions, pay your bills and EMIs, all from the This Webapp.</p>
+            </div>     
+            <hr class="clearfix w-100 d-md-none pb-3">
+            <div class="col-md-3 mb-md-0 mb-3" style="font-family: 'Times New Roman', Times, serif;">
+              <h5 class="text-uppercase"style="font-size:25px;color:white;">Company</h5>
+              <ul class="list-unstyled" style="text-decoration: none;">
+                <li>
+                  <a href="#!"style="text-decoration: none;font-size:20px;color:white;">About</a>
+                </li>
+                <li>
+                  <a href="#!"style="text-decoration: none;font-size:20px;color:white;">Careers</a>
+                </li>
+                <li>
+                  <a href="#!"style="text-decoration: none;font-size:20px;color:white;">Blog</a>
+                </li>
+              </ul>
+            </div>     
+          </div>
+        </div>
+        <div class="footer-copyright text-center py-3">© 2020 Copyright:
+          <a href="#!"> www.redcarpet.com</a>
+        </div>   
+      </footer>
+    {% endblock %}
+</body>
+</html>

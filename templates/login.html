@@ -1,0 +1,92 @@
+{% include 'homestyle.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        #in {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-sizing: border-box;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            resize: vertical;
+        }
+
+        :focus {
+            outline: none;
+        }
+
+        .imgcontainer {
+            text-align: center;
+            margin: auto;
+            width: 70%;
+            height: 70%;
+            resize: both;
+        }
+    </style>
+</head>
+<body class="bg-dark">
+    {% block content %} 
+    {%- for message in get_flashed_messages() %}
+    <div class="container-fluid p-0">
+        <div class="alert alert-primary alert-dismissible" role="alert" style="text-align: center;">
+          {{ message }}
+        </div>
+      </div>
+    {%- endfor %}
+    <div class="mt-5"></div>
+    <div class="card mb-3 "
+    style="max-width: 500px; margin:auto; border-radius:20px; padding: 10px; background-color: #f2f2f2; ">
+    <div class="row g-0" style="margin: auto; width:90%;">
+    <div class="tab"  style="margin-top:20px ;">
+        {% if Who == 'user' %}
+        <form method="POST" id = "login">
+            <div class="imgcontainer">
+                <img src="{{ url_for('static',filename='avtar.png')}}" alt="Avatar"
+                    style="height: 50%; width:50%;">
+            </div>
+            <b>Account Number:</b><input id='in' type="text" placeholder="Enter your Account Number" name="ac_no" required><br>
+            <b>Password: </b><input id='in' type="password" placeholder="Enter your password"
+                name="pass" required><br>
+            <div style="margin: auto; width:60% ; text-align:center">
+                <button type="submit" class="btn btn-primary" style="border-radius: 15px; width:100%;">
+                    <b>Login</b></button><br>
+            </div>
+        </form>
+        {% elif Who == 'agent' %}
+        <form method="POST" id = "login">
+            <div class="imgcontainer">
+                <img src="{{ url_for('static',filename='avtar.png')}}" alt="Avatar"
+                    style="height: 50%; width:50%;">
+            </div>
+            <b>ID Number:</b><input id='in' type="text" placeholder="Enter your Account Number" name="id_no" required><br>
+            <b>Password: </b><input id='in' type="password" placeholder="Enter your password"
+                name="pass" required><br>
+            <div style="margin: auto; width:60% ; text-align:center">
+                <button type="submit" class="btn btn-primary" style="border-radius: 15px; width:100%;">
+                    <b>Login</b></button><br>
+            </div>
+        </form>
+        {% else %}<form method="POST" id = "login">
+            <div class="imgcontainer">
+                <img src="{{ url_for('static',filename='avtar.png')}}" alt="Avatar"
+                    style="height: 50%; width:50%;">
+            </div>
+            <b>Login ID:</b><input id='in' type="text" placeholder="Enter your Account Number" name="log_id" required><br>
+            <b>Password: </b><input id='in' type="password" placeholder="Enter your password"
+                name="pass" required><br>
+            <div style="margin: auto; width:60% ; text-align:center">
+                <button type="submit" class="btn btn-primary" style="border-radius: 15px; width:100%;">
+                    <b>Login</b></button><br>
+            </div>
+        </form>
+        {% endif %}
+    </div>
+</div>
+</div>
+    {% endblock %}
+    
+</body>
+</html>
